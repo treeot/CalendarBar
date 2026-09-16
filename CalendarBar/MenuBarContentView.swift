@@ -78,7 +78,7 @@ struct MenuBarContentView: View {
             .help("Settings")
         }
         .padding(.bottom, 16)
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(width: 328, alignment: .leading)
     }
 
     @ViewBuilder

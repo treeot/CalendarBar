@@ -18,7 +18,7 @@ jobs:
       - name: Check out tagged source
         uses: actions/checkout@v4
 
-      - name: Build unsigned Release archive
+      - name: Build ad-hoc signed Release archive
         run: >-
           xcodebuild archive
           -project CalendarBar.xcodeproj
@@ -26,8 +26,9 @@ jobs:
           -configuration Release
           -destination 'generic/platform=macOS'
           -archivePath "$RUNNER_TEMP/CalendarBar.xcarchive"
-          CODE_SIGNING_ALLOWED=NO
+          CODE_SIGNING_ALLOWED=YES
           CODE_SIGNING_REQUIRED=NO
+          CODE_SIGN_IDENTITY=-
 
       - name: Package application as a DMG
         run: |

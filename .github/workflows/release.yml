@@ -11,6 +11,9 @@ permissions:
 jobs:
   package:
     runs-on: macos-14
+    env:
+      ARCHS: arm64 x86_64
+      ONLY_ACTIVE_ARCH: NO
     steps:
       - name: Check out tagged source
         uses: actions/checkout@v4
@@ -42,6 +45,8 @@ jobs:
             "$RUNNER_TEMP/release/CalendarBar-${GITHUB_REF_NAME}.dmg"
           shasum -a 256 "$RUNNER_TEMP/release/CalendarBar-${GITHUB_REF_NAME}.dmg" \
             > "$RUNNER_TEMP/release/SHA256SUMS"
+          lipo -archs "$RUNNER_TEMP/dmg-root/CalendarBar.app/Contents/MacOS/CalendarBar" \
+            | grep -Eq 'arm64.*x86_64|x86_64.*arm64'
 
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2

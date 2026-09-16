@@ -15,6 +15,12 @@ struct MenuBarContentView: View {
         .padding(16)
         .frame(width: 360)
         .background(.regularMaterial)
+        .onAppear {
+            manager.refresh()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
+            manager.refresh()
+        }
     }
 
     private var header: some View {
@@ -41,8 +47,14 @@ struct MenuBarContentView: View {
                     launchAtLogin.setEnabled(!launchAtLogin.isEnabled)
                 } label: {
                     Label(
-                        LaunchAtLoginMenuPresentation.title(isEnabled: launchAtLogin.isEnabled),
-                        systemImage: LaunchAtLoginMenuPresentation.symbolName(isEnabled: launchAtLogin.isEnabled)
+                        LaunchAtLoginMenuPresentation.title(
+                            isEnabled: launchAtLogin.isEnabled,
+                            requiresApproval: launchAtLogin.requiresApproval
+                        ),
+                        systemImage: LaunchAtLoginMenuPresentation.symbolName(
+                            isEnabled: launchAtLogin.isEnabled,
+                            requiresApproval: launchAtLogin.requiresApproval
+                        )
                     )
                 }
 

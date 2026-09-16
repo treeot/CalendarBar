@@ -41,12 +41,14 @@ final class CalendarManager: ObservableObject {
     @Published private(set) var now = Date()
 
     private let eventStore = EKEventStore()
+    private var authorizationMonitorTimer: Timer?
     private var refreshTimer: Timer?
     private var eventStoreChangedObserver: NSObjectProtocol?
     private var cachedEvents: [CalendarEvent] = []
     private var eventsLoadedAt: Date?
 
     deinit {
+        authorizationMonitorTimer?.invalidate()
         refreshTimer?.invalidate()
         if let eventStoreChangedObserver {
             NotificationCenter.default.removeObserver(eventStoreChangedObserver)
@@ -54,6 +56,8 @@ final class CalendarManager: ObservableObject {
     }
 
     func requestAccessAndStart() {
+        installAuthorizationMonitorIfNeeded()
+
         let state = CalendarAuthorizationStatePolicy.state(
             for: EKEventStore.authorizationStatus(for: .event)
         )
@@ -151,9 +155,17 @@ final class CalendarManager: ObservableObject {
     }
 
     private func handleTimerTick() {
-        guard authorizationState == .authorized else { return }
-
         let currentDate = Date()
+        let currentAuthorizationState = CalendarAuthorizationStatePolicy.state(
+            for: EKEventStore.authorizationStatus(for: .event)
+        )
+
+        guard currentAuthorizationState == .authorized,
+              authorizationState == .authorized else {
+            refresh()
+            return
+        }
+
         if EventCachePolicy.requiresReload(lastLoadedAt: eventsLoadedAt, now: currentDate) {
             refresh()
         } else {
@@ -216,6 +228,7 @@ final class CalendarManager: ObservableObject {
     private func beginAuthorizedUpdates() {
         authorizationState = .authorized
         errorMessage = nil
+        stopAuthorizationMonitor()
         installLiveUpdatesIfNeeded()
         refresh()
     }
@@ -257,6 +270,23 @@ final class CalendarManager: ObservableObject {
                 }
             }
         }
+    }
+
+    private func installAuthorizationMonitorIfNeeded() {
+        guard authorizationMonitorTimer == nil else { return }
+
+        let timer = Timer(timeInterval: 2, repeats: true) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                self?.refresh()
+            }
+        }
+        RunLoop.main.add(timer, forMode: .common)
+        authorizationMonitorTimer = timer
+    }
+
+    private func stopAuthorizationMonitor() {
+        authorizationMonitorTimer?.invalidate()
+        authorizationMonitorTimer = nil
     }
 
     private func stopLiveUpdates() {

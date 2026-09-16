@@ -6,46 +6,30 @@ struct CurrentEventView: View {
     var body: some View {
         Group {
             if let event {
-                VStack(alignment: .leading, spacing: 10) {
-                    HStack(alignment: .top, spacing: 10) {
-                        Image(systemName: "calendar.badge.clock")
-                            .font(.title3)
-                            .foregroundStyle(.tint)
-                            .accessibilityHidden(true)
+                HStack(alignment: .top, spacing: 10) {
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(event.title)
+                            .font(.headline)
+                            .lineLimit(1)
+                            .truncationMode(.tail)
 
-                        VStack(alignment: .leading, spacing: 3) {
-                            Text(event.title)
-                                .font(.headline)
-                                .lineLimit(2)
-                                .truncationMode(.tail)
-
-                            Text(event.calendarTitle)
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
-                                .lineLimit(1)
-
-                            if let location = event.location {
-                                Label(location, systemImage: "mappin.and.ellipse")
-                                    .font(.subheadline)
-                                    .foregroundStyle(.secondary)
-                                    .lineLimit(1)
-                            }
+                    if let location = event.location {
+                        Label(location, systemImage: "mappin.and.ellipse")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .lineLimit(1)
                         }
-
-                        Spacer(minLength: 0)
                     }
 
-                    Text(
-                        "\(event.startDate.formatted(date: .omitted, time: .shortened)) – "
-                            + "\(event.endDate.formatted(date: .omitted, time: .shortened))"
-                    )
+                    Spacer(minLength: 8)
+
+                    Text(event.startDate, format: .dateTime.hour().minute())
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
-                        .lineLimit(1)
+                        .frame(width: 78, alignment: .trailing)
+                        .fixedSize()
                 }
-                .padding(12)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .background(.quaternary, in: RoundedRectangle(cornerRadius: 10))
             } else {
                 Label("No event in progress", systemImage: "calendar")
                     .foregroundStyle(.secondary)

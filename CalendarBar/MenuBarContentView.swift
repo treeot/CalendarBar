@@ -78,6 +78,7 @@ struct MenuBarContentView: View {
             .help("Settings")
         }
         .padding(.bottom, 16)
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     @ViewBuilder
@@ -174,6 +175,16 @@ struct MenuBarContentView: View {
 
             eventActionsMenu(for: event)
                 .padding(.top, isCurrent ? 8 : 3)
+        }
+        .padding(.leading, isCurrent ? 12 : 0)
+        .padding(.trailing, 12)
+        .padding(.vertical, isCurrent ? 12 : 0)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background {
+            if isCurrent {
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(.quaternary)
+            }
         }
     }
 

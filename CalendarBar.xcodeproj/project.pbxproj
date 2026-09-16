@@ -1,0 +1,169 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B00000000000000000000001 /* CalendarBarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00000000000000000000001 /* CalendarBarApp.swift */; };
+		B00000000000000000000002 /* CalendarEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00000000000000000000002 /* CalendarEvent.swift */; };
+		B00000000000000000000003 /* CalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00000000000000000000003 /* CalendarManager.swift */; };
+		B00000000000000000000004 /* MenuBarContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00000000000000000000004 /* MenuBarContentView.swift */; };
+		B00000000000000000000005 /* EventViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00000000000000000000005 /* EventViews.swift */; };
+		B00000000000000000000006 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C00000000000000000000006 /* Assets.xcassets */; };
+		B00000000000000000000007 /* EventTimelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00000000000000000000009 /* EventTimelineTests.swift */; };
+		B00000000000000000000008 /* LaunchAtLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0000000000000000000000C /* LaunchAtLoginManager.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D00000000000000000000001 = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E00000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A00000000000000000000001;
+			remoteInfo = CalendarBar;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		C00000000000000000000001 /* CalendarBarApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarBarApp.swift; sourceTree = "<group>"; };
+		C00000000000000000000002 /* CalendarEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEvent.swift; sourceTree = "<group>"; };
+		C00000000000000000000003 /* CalendarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarManager.swift; sourceTree = "<group>"; };
+		C00000000000000000000004 /* MenuBarContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarContentView.swift; sourceTree = "<group>"; };
+		C00000000000000000000005 /* EventViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventViews.swift; sourceTree = "<group>"; };
+		C00000000000000000000006 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C00000000000000000000007 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C00000000000000000000008 /* CalendarBar.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CalendarBar.entitlements; sourceTree = "<group>"; };
+		C00000000000000000000009 /* EventTimelineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTimelineTests.swift; sourceTree = "<group>"; };
+		C0000000000000000000000A /* CalendarBar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CalendarBar.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C0000000000000000000000B /* CalendarBarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalendarBarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C0000000000000000000000C /* LaunchAtLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginManager.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F00000000000000000000001 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		F00000000000000000000002 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		100000000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				100000000000000000000002 /* CalendarBar */,
+				100000000000000000000003 /* CalendarBarTests */,
+				100000000000000000000004 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		100000000000000000000002 /* CalendarBar */ = {
+			isa = PBXGroup;
+			children = (
+				C00000000000000000000001 /* CalendarBarApp.swift */,
+				C00000000000000000000002 /* CalendarEvent.swift */,
+				C00000000000000000000003 /* CalendarManager.swift */,
+				C00000000000000000000004 /* MenuBarContentView.swift */,
+				C00000000000000000000005 /* EventViews.swift */,
+				C0000000000000000000000C /* LaunchAtLoginManager.swift */,
+				C00000000000000000000006 /* Assets.xcassets */,
+				C00000000000000000000007 /* Info.plist */,
+				C00000000000000000000008 /* CalendarBar.entitlements */,
+			);
+			path = CalendarBar;
+			sourceTree = "<group>";
+		};
+		100000000000000000000003 /* CalendarBarTests */ = {
+			isa = PBXGroup;
+			children = (C00000000000000000000009 /* EventTimelineTests.swift */,);
+			path = CalendarBarTests;
+			sourceTree = "<group>";
+		};
+		100000000000000000000004 /* Products */ = {
+			isa = PBXGroup;
+			children = (C0000000000000000000000A /* CalendarBar.app */, C0000000000000000000000B /* CalendarBarTests.xctest */,);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A00000000000000000000001 /* CalendarBar */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 200000000000000000000001 /* Build configuration list for PBXNativeTarget CalendarBar */;
+			buildPhases = (300000000000000000000001 /* Sources */, F00000000000000000000001 /* Frameworks */, 400000000000000000000001 /* Resources */,);
+			buildRules = ();
+			dependencies = ();
+			name = CalendarBar;
+			productName = CalendarBar;
+			productReference = C0000000000000000000000A /* CalendarBar.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A00000000000000000000002 /* CalendarBarTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 200000000000000000000002 /* Build configuration list for PBXNativeTarget CalendarBarTests */;
+			buildPhases = (300000000000000000000002 /* Sources */, F00000000000000000000002 /* Frameworks */, 400000000000000000000002 /* Resources */,);
+			buildRules = ();
+			dependencies = (500000000000000000000001 /* PBXTargetDependency */,);
+			name = CalendarBarTests;
+			productName = CalendarBarTests;
+			productReference = C0000000000000000000000B /* CalendarBarTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E00000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2660;
+				LastUpgradeCheck = 2660;
+				TargetAttributes = {
+					A00000000000000000000001 = {CreatedOnToolsVersion = 26.0;};
+					A00000000000000000000002 = {CreatedOnToolsVersion = 26.0; TestTargetID = A00000000000000000000001;};
+				};
+			};
+			buildConfigurationList = 200000000000000000000003 /* Build configuration list for PBXProject CalendarBar */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (en, Base,);
+			mainGroup = 100000000000000000000001;
+			productRefGroup = 100000000000000000000004 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (A00000000000000000000001 /* CalendarBar */, A00000000000000000000002 /* CalendarBarTests */,);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		400000000000000000000001 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (B00000000000000000000006 /* Assets.xcassets in Resources */,); runOnlyForDeploymentPostprocessing = 0; };
+		400000000000000000000002 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		300000000000000000000001 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (B00000000000000000000001, B00000000000000000000002, B00000000000000000000003, B00000000000000000000004, B00000000000000000000005, B00000000000000000000008,); runOnlyForDeploymentPostprocessing = 0; };
+		300000000000000000000002 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (B00000000000000000000007,); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		500000000000000000000001 /* PBXTargetDependency */ = {isa = PBXTargetDependency; target = A00000000000000000000001 /* CalendarBar */; targetProxy = D00000000000000000000001; };
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		600000000000000000000001 /* Debug app */ = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor; CODE_SIGN_ENTITLEMENTS = CalendarBar/CalendarBar.entitlements; CODE_SIGN_IDENTITY = "-"; CODE_SIGN_STYLE = Automatic; COMBINE_HIDPI_IMAGES = YES; CURRENT_PROJECT_VERSION = 1; DEBUG_INFORMATION_FORMAT = dwarf; DEVELOPMENT_TEAM = ""; ENABLE_APP_SANDBOX = YES; ENABLE_HARDENED_RUNTIME = YES; ENABLE_TESTABILITY = YES; GENERATE_INFOPLIST_FILE = NO; INFOPLIST_FILE = CalendarBar/Info.plist; MACOSX_DEPLOYMENT_TARGET = 14.0; MARKETING_VERSION = 1.0; PRODUCT_BUNDLE_IDENTIFIER = com.bensonzhang.CalendarBar; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_EMIT_LOC_STRINGS = YES; SWIFT_VERSION = 5.0; }; name = Debug; };
+		600000000000000000000002 /* Release app */ = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor; CODE_SIGN_ENTITLEMENTS = CalendarBar/CalendarBar.entitlements; CODE_SIGN_IDENTITY = "-"; CODE_SIGN_STYLE = Automatic; COMBINE_HIDPI_IMAGES = YES; CURRENT_PROJECT_VERSION = 1; DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym"; DEVELOPMENT_TEAM = ""; ENABLE_APP_SANDBOX = YES; ENABLE_HARDENED_RUNTIME = YES; GENERATE_INFOPLIST_FILE = NO; INFOPLIST_FILE = CalendarBar/Info.plist; MACOSX_DEPLOYMENT_TARGET = 14.0; MARKETING_VERSION = 1.0; PRODUCT_BUNDLE_IDENTIFIER = com.bensonzhang.CalendarBar; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_COMPILATION_MODE = wholemodule; SWIFT_EMIT_LOC_STRINGS = YES; SWIFT_OPTIMIZATION_LEVEL = "-O"; SWIFT_VERSION = 5.0; }; name = Release; };
+		600000000000000000000003 /* Debug tests */ = {isa = XCBuildConfiguration; buildSettings = {BUNDLE_LOADER = "$(TEST_HOST)"; CODE_SIGN_STYLE = Automatic; DEVELOPMENT_TEAM = ""; GENERATE_INFOPLIST_FILE = YES; MACOSX_DEPLOYMENT_TARGET = 14.0; PRODUCT_BUNDLE_IDENTIFIER = com.bensonzhang.CalendarBarTests; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 5.0; TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CalendarBar.app/Contents/MacOS/CalendarBar"; }; name = Debug; };
+		600000000000000000000004 /* Release tests */ = {isa = XCBuildConfiguration; buildSettings = {BUNDLE_LOADER = "$(TEST_HOST)"; CODE_SIGN_STYLE = Automatic; DEVELOPMENT_TEAM = ""; GENERATE_INFOPLIST_FILE = YES; MACOSX_DEPLOYMENT_TARGET = 14.0; PRODUCT_BUNDLE_IDENTIFIER = com.bensonzhang.CalendarBarTests; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 5.0; TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CalendarBar.app/Contents/MacOS/CalendarBar"; }; name = Release; };
+		600000000000000000000005 /* Debug project */ = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; CLANG_ENABLE_OBJC_ARC = YES; COPY_PHASE_STRIP = NO; DEBUG_INFORMATION_FORMAT = dwarf; ENABLE_STRICT_OBJC_MSGSEND = YES; GCC_C_LANGUAGE_STANDARD = gnu17; GCC_OPTIMIZATION_LEVEL = 0; MACOSX_DEPLOYMENT_TARGET = 14.0; SDKROOT = macosx; SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG; SWIFT_OPTIMIZATION_LEVEL = "-Onone"; }; name = Debug; };
+		600000000000000000000006 /* Release project */ = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; CLANG_ENABLE_OBJC_ARC = YES; DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym"; ENABLE_NS_ASSERTIONS = NO; ENABLE_STRICT_OBJC_MSGSEND = YES; GCC_C_LANGUAGE_STANDARD = gnu17; MACOSX_DEPLOYMENT_TARGET = 14.0; SDKROOT = macosx; SWIFT_COMPILATION_MODE = wholemodule; }; name = Release; };
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		200000000000000000000001 /* Build configuration list for PBXNativeTarget CalendarBar */ = {isa = XCConfigurationList; buildConfigurations = (600000000000000000000001, 600000000000000000000002,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		200000000000000000000002 /* Build configuration list for PBXNativeTarget CalendarBarTests */ = {isa = XCConfigurationList; buildConfigurations = (600000000000000000000003, 600000000000000000000004,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		200000000000000000000003 /* Build configuration list for PBXProject CalendarBar */ = {isa = XCConfigurationList; buildConfigurations = (600000000000000000000005, 600000000000000000000006,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+/* End XCConfigurationList section */
+	};
+	rootObject = E00000000000000000000001 /* Project object */;
+}

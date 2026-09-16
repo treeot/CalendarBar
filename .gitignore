@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+
+# Xcode build products
+build/
+DerivedData/
+*.xcarchive
+*.dSYM
+*.dSYM.zip
+
+# Xcode user-specific state
+xcuserdata/
+*.xcuserstate
+*.xccheckout
+*.xcscmblueprint
+
+# JetBrains IDE files
+.idea/
+*.iml
+
+# Swift Package Manager
+.build/
+.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
+.swiftpm/xcode/xcuserdata/
+Package.resolved

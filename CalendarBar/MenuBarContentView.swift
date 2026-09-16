@@ -195,6 +195,8 @@ struct MenuBarContentView: View {
                 .font(.body)
         }
         .menuStyle(.borderlessButton)
+        .menuIndicator(.hidden)
+        .frame(width: 24, alignment: .trailing)
         .help("Event actions")
     }
 

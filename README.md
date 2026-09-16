@@ -26,7 +26,7 @@ and does not connect to the internet.
 Download the latest `.dmg` from [Releases](https://github.com/treeot/CalendarBar/releases),
 open it, and drag **CalendarBar** into the **Applications** folder.
 
-The releases are currently unsigned because this project does not use a paid
+The releases are ad-hoc signed but are not signed or notarized with a paid
 Apple Developer account. macOS may warn that the app cannot be opened or that
 Apple cannot verify it. This is expected for these releases.
 

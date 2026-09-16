@@ -17,9 +17,11 @@ struct MenuBarContentView: View {
         .background(.regularMaterial)
         .onAppear {
             manager.refresh()
+            launchAtLogin.refreshStatus()
         }
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
             manager.refresh()
+            launchAtLogin.refreshStatus()
         }
     }
 
@@ -72,6 +74,7 @@ struct MenuBarContentView: View {
                     .font(.body)
             }
             .menuStyle(.borderlessButton)
+            .menuIndicator(.hidden)
             .help("Settings")
         }
         .padding(.bottom, 16)

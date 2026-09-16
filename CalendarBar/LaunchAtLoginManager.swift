@@ -95,7 +95,7 @@ final class LaunchAtLoginManager: ObservableObject {
         setEnabled(isEnabled)
     }
 
-    private func refreshStatus() {
+    func refreshStatus() {
         let status = SMAppService.mainApp.status
         requiresApproval = status == .requiresApproval
         let registrationStatus: LaunchAtLoginRegistrationStatus

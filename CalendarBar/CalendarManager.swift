@@ -12,6 +12,26 @@ enum CalendarAuthorizationState: Equatable {
     case failed
 }
 
+enum CalendarAuthorizationStatePolicy {
+    static func state(for status: EKAuthorizationStatus) -> CalendarAuthorizationState {
+        switch status {
+        case .notDetermined:
+            return .notDetermined
+        case .restricted:
+            return .restricted
+        case .denied:
+            return .denied
+        case .authorized, .fullAccess:
+            return .authorized
+        case .writeOnly:
+            // CalendarBar only reads events, so write-only access is unusable.
+            return .denied
+        @unknown default:
+            return .denied
+        }
+    }
+}
+
 @MainActor
 final class CalendarManager: ObservableObject {
     @Published private(set) var authorizationState: CalendarAuthorizationState = .notDetermined
@@ -34,7 +54,9 @@ final class CalendarManager: ObservableObject {
     }
 
     func requestAccessAndStart() {
-        let state = authorizationState(for: EKEventStore.authorizationStatus(for: .event))
+        let state = CalendarAuthorizationStatePolicy.state(
+            for: EKEventStore.authorizationStatus(for: .event)
+        )
 
         switch state {
         case .notDetermined:
@@ -74,7 +96,9 @@ final class CalendarManager: ObservableObject {
     }
 
     func refresh() {
-        let state = authorizationState(for: EKEventStore.authorizationStatus(for: .event))
+        let state = CalendarAuthorizationStatePolicy.state(
+            for: EKEventStore.authorizationStatus(for: .event)
+        )
 
         guard state == .authorized else {
             if authorizationState != .requesting {
@@ -111,7 +135,10 @@ final class CalendarManager: ObservableObject {
 
         cachedEvents = eventStore.events(matching: predicate)
             .filter { !$0.isAllDay }
-            .compactMap { CalendarEvent(event: $0) }
+            .enumerated()
+            .compactMap { index, event in
+                CalendarEvent(event: event, fallbackDisambiguator: index)
+            }
         eventsLoadedAt = currentDate
         errorMessage = nil
         updateTimeline(at: currentDate)
@@ -242,33 +269,21 @@ final class CalendarManager: ObservableObject {
         }
     }
 
-    private func authorizationState(for status: EKAuthorizationStatus) -> CalendarAuthorizationState {
-        switch status {
-        case .notDetermined:
-            return .notDetermined
-        case .restricted:
-            return .restricted
-        case .denied:
-            return .denied
-        case .authorized, .fullAccess:
-            return .authorized
-        case .writeOnly:
-            // CalendarBar only reads events, so write-only access is unusable.
-            return .denied
-        @unknown default:
-            return .denied
-        }
-    }
-
 }
 
 private extension CalendarEvent {
-    init?(event: EKEvent) {
+    init?(event: EKEvent, fallbackDisambiguator: Int) {
         guard let startDate = event.startDate, let endDate = event.endDate else {
             return nil
         }
 
-        let fallbackID = "\(event.title ?? "")|\(startDate.timeIntervalSinceReferenceDate)|\(endDate.timeIntervalSinceReferenceDate)"
+        let fallbackID = CalendarEvent.fallbackID(
+            title: event.title ?? "",
+            startDate: startDate,
+            endDate: endDate,
+            calendarTitle: event.calendar?.title ?? "Calendar",
+            disambiguator: fallbackDisambiguator
+        )
         let color: NSColor?
         if let calendar = event.calendar,
            let calendarColor = NSColor(cgColor: calendar.cgColor) {

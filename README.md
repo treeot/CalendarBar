@@ -1,6 +1,7 @@
 # CalendarBar
 
-CalendarBar is a lightweight, menu-bar-only macOS app built with SwiftUI and EventKit. It shows the current calendar event, every remaining timed event today, and a live minute countdown to the next event.
+CalendarBar is a small macOS menu-bar app that shows what is happening on your
+calendar now and what is coming up next. Your calendar data stays on your Mac.
 
 ![CalendarBar app icon](CalendarBar/Assets.xcassets/AppIcon.appiconset/AppIcon-512.png)
 
@@ -11,41 +12,63 @@ layouts.
 
 ![CalendarBar light and dark mockups](screenshots/CalendarBar-mockups.png)
 
-It has no third-party dependencies or networking. Open the menu-bar item to
-see current and upcoming events.
+Open the calendar icon in the menu bar to see your current event, upcoming
+events, and the time of each event. CalendarBar has no third-party dependencies
+and does not connect to the internet.
 
 ## Requirements
 
 - macOS 14 or newer
-- Xcode 15 or newer
-- No third-party dependencies
-- No paid Apple Developer account for local use
+- Xcode 15 or newer, if building from source
 
-## Run it
+## Install the app
+
+Download the latest `.dmg` from [Releases](https://github.com/treeot/CalendarBar/releases),
+open it, and drag **CalendarBar** into the **Applications** folder.
+
+The releases are currently unsigned because this project does not use a paid
+Apple Developer account. macOS may warn that the app cannot be opened or that
+Apple cannot verify it. This is expected for these releases.
+
+To open it, control-click **CalendarBar.app** in Applications, choose **Open**,
+then choose **Open** again. If macOS still blocks it, go to **System Settings →
+Privacy & Security**, scroll down, and click **Open Anyway** for CalendarBar.
+
+After opening the app, choose **Allow Full Access** when macOS asks for calendar
+access. CalendarBar then appears in the menu bar and does not show a Dock icon.
+
+## Run from source
 
 1. Open `CalendarBar.xcodeproj` in Xcode.
 2. Select the **CalendarBar** scheme and **My Mac** destination.
 3. Press **Run** (`⌘R`).
 4. Choose **Allow Full Access** when macOS asks for calendar access.
 
-CalendarBar runs only in the menu bar and intentionally has no Dock icon. Click its calendar icon/title to open the event panel.
+CalendarBar runs only in the menu bar and intentionally has no Dock icon. Click
+its calendar icon or title to open the event panel.
 
 The app enables **Launch at Login** on first run. You can turn it off from the
 CalendarBar menu. For this feature, use a stable installed copy in
 `/Applications`; ad-hoc builds run directly from Xcode are not reliable for
 testing Login Items.
 
-If access was previously denied, use CalendarBar's **Open System Settings** button or go to:
+If access was previously denied, use CalendarBar's **Open System Settings**
+button or go to:
 
 **System Settings → Privacy & Security → Calendars → CalendarBar**
 
-## Permissions
+## Calendar access and launch at login
 
-CalendarBar uses the macOS Calendar permission and runs as a menu-bar-only app.
-If access was previously denied, open **System Settings → Privacy & Security →
-Calendars → CalendarBar**.
+CalendarBar needs macOS Calendar access to show events. You can change this at
+any time in **System Settings → Privacy & Security → Calendars → CalendarBar**.
 
-## Command-line verification
+You can enable or disable **Launch at Login** from CalendarBar's settings menu.
+For reliable launch-at-login behavior, install the app in `/Applications` from
+the DMG instead of running a copy directly from Xcode. Because the app is
+unsigned, macOS may require you to approve it in **System Settings → General →
+Login Items & Extensions**.
+
+## Build and test
 
 Build without signing:
 

@@ -2,12 +2,20 @@ import Combine
 import ServiceManagement
 
 enum LaunchAtLoginMenuPresentation {
-    static func title(isEnabled: Bool) -> String {
-        "Launch at Login: \(isEnabled ? "On" : "Off")"
+    static func title(isEnabled: Bool, requiresApproval: Bool = false) -> String {
+        if requiresApproval {
+            return "Launch at Login: Needs Approval"
+        }
+
+        return "Launch at Login: \(isEnabled ? "On" : "Off")"
     }
 
-    static func symbolName(isEnabled: Bool) -> String {
-        isEnabled ? "checkmark.circle.fill" : "circle"
+    static func symbolName(isEnabled: Bool, requiresApproval: Bool = false) -> String {
+        if requiresApproval {
+            return "exclamationmark.circle"
+        }
+
+        return isEnabled ? "checkmark.circle.fill" : "circle"
     }
 }
 
@@ -24,11 +32,10 @@ enum LaunchAtLoginStatePolicy {
         status: LaunchAtLoginRegistrationStatus
     ) -> Bool {
         switch status {
-        case .enabled, .requiresApproval:
+        case .enabled:
             return true
-        case .notRegistered, .notFound:
-            // Keep the user's requested state while launch-services registration settles.
-            return requestedEnabled
+        case .requiresApproval, .notRegistered, .notFound:
+            return false
         }
     }
 }

@@ -260,11 +260,20 @@ final class EventTimelineTests: XCTestCase {
         XCTAssertEqual(LaunchAtLoginMenuPresentation.symbolName(isEnabled: false), "circle")
     }
 
-    func testLaunchAtLoginStateStaysOnWhenRegistrationStatusHasNotSettled() {
-        XCTAssertTrue(
+    func testLaunchAtLoginStateIsOffWhenRegistrationHasNotCompleted() {
+        XCTAssertFalse(
             LaunchAtLoginStatePolicy.displayedEnabled(
                 requestedEnabled: true,
                 status: .notRegistered
+            )
+        )
+    }
+
+    func testLaunchAtLoginStateIsOffUntilApprovalIsComplete() {
+        XCTAssertFalse(
+            LaunchAtLoginStatePolicy.displayedEnabled(
+                requestedEnabled: true,
+                status: .requiresApproval
             )
         )
     }
@@ -276,6 +285,50 @@ final class EventTimelineTests: XCTestCase {
                 status: .notRegistered
             )
         )
+    }
+
+    func testLaunchAtLoginMenuExplainsWhenApprovalIsRequired() {
+        XCTAssertEqual(
+            LaunchAtLoginMenuPresentation.title(isEnabled: false, requiresApproval: true),
+            "Launch at Login: Needs Approval"
+        )
+        XCTAssertEqual(
+            LaunchAtLoginMenuPresentation.symbolName(isEnabled: false, requiresApproval: true),
+            "exclamationmark.circle"
+        )
+    }
+
+    func testAuthorizationStateMapsFullAccessToAuthorized() {
+        XCTAssertEqual(
+            CalendarAuthorizationStatePolicy.state(for: .fullAccess),
+            .authorized
+        )
+    }
+
+    func testAuthorizationStateMapsDeniedToDenied() {
+        XCTAssertEqual(
+            CalendarAuthorizationStatePolicy.state(for: .denied),
+            .denied
+        )
+    }
+
+    func testFallbackEventIDsAreUniqueForDuplicateEvents() {
+        let first = CalendarEvent.fallbackID(
+            title: "Meeting",
+            startDate: now,
+            endDate: now.addingTimeInterval(60),
+            calendarTitle: "Work",
+            disambiguator: 0
+        )
+        let second = CalendarEvent.fallbackID(
+            title: "Meeting",
+            startDate: now,
+            endDate: now.addingTimeInterval(60),
+            calendarTitle: "Work",
+            disambiguator: 1
+        )
+
+        XCTAssertNotEqual(first, second)
     }
 
     private func makeEvent(

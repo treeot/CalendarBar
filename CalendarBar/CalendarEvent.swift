@@ -9,6 +9,17 @@ struct CalendarEvent: Identifiable, Equatable, Sendable {
     let calendarColorHex: String
     let location: String?
 
+    static func fallbackID(
+        title: String,
+        startDate: Date,
+        endDate: Date,
+        calendarTitle: String,
+        disambiguator: Int
+    ) -> String {
+        "fallback|\(calendarTitle)|\(title)|\(startDate.timeIntervalSinceReferenceDate)|"
+            + "\(endDate.timeIntervalSinceReferenceDate)|\(disambiguator)"
+    }
+
     init(
         id: String,
         title: String,

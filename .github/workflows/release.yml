@@ -1,0 +1,52 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: macos-14
+    steps:
+      - name: Check out tagged source
+        uses: actions/checkout@v4
+
+      - name: Build unsigned Release archive
+        run: >-
+          xcodebuild archive
+          -project CalendarBar.xcodeproj
+          -scheme CalendarBar
+          -configuration Release
+          -destination 'generic/platform=macOS'
+          -archivePath "$RUNNER_TEMP/CalendarBar.xcarchive"
+          CODE_SIGNING_ALLOWED=NO
+          CODE_SIGNING_REQUIRED=NO
+
+      - name: Package application as a DMG
+        run: |
+          mkdir -p "$RUNNER_TEMP/release"
+          mkdir -p "$RUNNER_TEMP/dmg-root"
+          ditto \
+            "$RUNNER_TEMP/CalendarBar.xcarchive/Products/Applications/CalendarBar.app" \
+            "$RUNNER_TEMP/dmg-root/CalendarBar.app"
+          ln -s /Applications "$RUNNER_TEMP/dmg-root/Applications"
+          hdiutil create \
+            -volname CalendarBar \
+            -srcfolder "$RUNNER_TEMP/dmg-root" \
+            -ov \
+            -format UDZO \
+            "$RUNNER_TEMP/release/CalendarBar-${GITHUB_REF_NAME}.dmg"
+          shasum -a 256 "$RUNNER_TEMP/release/CalendarBar-${GITHUB_REF_NAME}.dmg" \
+            > "$RUNNER_TEMP/release/SHA256SUMS"
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: |
+            ${{ runner.temp }}/release/CalendarBar-${{ github.ref_name }}.dmg
+            ${{ runner.temp }}/release/SHA256SUMS

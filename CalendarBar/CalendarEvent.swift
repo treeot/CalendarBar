@@ -151,6 +151,11 @@ enum MenuBarDisplayMode: String, CaseIterable, Identifiable {
 
 enum MenuBarTitleFormatter {
     private static let maximumFullTitleLength = 31
+    private static let countdownSeparator = " · "
+    // Reserve a fixed width for the countdown so the visible title length stays
+    // constant as the countdown ticks down. Without this the title reflows every
+    // minute and the whole menu bar item shifts position ("moves").
+    private static let reservedCountdownLength = 7
 
     static func title(
         mode: MenuBarDisplayMode,
@@ -165,9 +170,14 @@ enum MenuBarTitleFormatter {
             switch mode {
             case .full:
                 let prefix = "Next: "
-                let suffix = " · \(timeRemaining)"
-                let titleBudget = maximumFullTitleLength - prefix.count - suffix.count
-                return prefix + truncated(nextEvent.title, maximumLength: titleBudget) + suffix
+                let titleBudget = maximumFullTitleLength
+                    - prefix.count
+                    - countdownSeparator.count
+                    - reservedCountdownLength
+                return prefix
+                    + truncated(nextEvent.title, maximumLength: titleBudget)
+                    + countdownSeparator
+                    + timeRemaining
             case .compact:
                 return timeRemaining
             case .iconOnly:

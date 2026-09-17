@@ -170,23 +170,31 @@ final class EventTimelineTests: XCTestCase {
         )
     }
 
-    func testFullMenuBarTitleAdaptsEventTitleToThirtyOneCharacters() {
-        let event = makeEvent(
-            id: "next",
-            title: "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
+    func testFullMenuBarTitleTruncatesToAStableTitleBudgetRegardlessOfCountdown() {
+        let longTitle = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+        let farEvent = makeEvent(
+            id: "far",
+            title: longTitle,
             startOffset: 546 * 60,
             endOffset: 547 * 60
         )
-
-        let title = MenuBarTitleFormatter.title(
-            mode: .full,
-            currentEvent: nil,
-            upcomingEvents: [event],
-            now: now
+        let nearEvent = makeEvent(
+            id: "near",
+            title: longTitle,
+            startOffset: 61,
+            endOffset: 300
         )
 
-        XCTAssertEqual(title, "Next: ABCDEFGHIJKLMNOP… · 9h 6m")
-        XCTAssertEqual(title?.count, 31)
+        // The visible title must stay identical while only the countdown differs,
+        // otherwise the menu bar item reflows and shifts every minute.
+        XCTAssertEqual(
+            MenuBarTitleFormatter.title(mode: .full, currentEvent: nil, upcomingEvents: [farEvent], now: now),
+            "Next: ABCDEFGHIJKLMN… · 9h 6m"
+        )
+        XCTAssertEqual(
+            MenuBarTitleFormatter.title(mode: .full, currentEvent: nil, upcomingEvents: [nearEvent], now: now),
+            "Next: ABCDEFGHIJKLMN… · 2m"
+        )
     }
 
     func testEventCacheRequiresReloadForFirstLoadAndNewDayOnly() {

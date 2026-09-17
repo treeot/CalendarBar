@@ -9,7 +9,12 @@ struct MenuBarContentView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             header
-            authorizationContent
+            ScrollView(.vertical, showsIndicators: false) {
+                authorizationContent
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .frame(maxHeight: 420)
+            .fixedSize(horizontal: false, vertical: true)
             footer
         }
         .padding(16)

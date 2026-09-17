@@ -49,14 +49,12 @@ final class LaunchAtLoginManager: ObservableObject {
     private let preferenceKey = "launchAtLoginEnabled"
 
     init() {
-        if UserDefaults.standard.object(forKey: preferenceKey) == nil {
-            UserDefaults.standard.set(true, forKey: preferenceKey)
-        }
-
+        // Launch at Login is opt-in: never register the app as a login item
+        // without the user turning it on explicitly from the menu.
         isEnabled = UserDefaults.standard.bool(forKey: preferenceKey)
 
         Task { @MainActor [weak self] in
-            self?.applySavedPreference()
+            self?.refreshStatus()
         }
     }
 
@@ -89,10 +87,6 @@ final class LaunchAtLoginManager: ObservableObject {
 
     func openLoginItemsSettings() {
         SMAppService.openSystemSettingsLoginItems()
-    }
-
-    private func applySavedPreference() {
-        setEnabled(isEnabled)
     }
 
     func refreshStatus() {

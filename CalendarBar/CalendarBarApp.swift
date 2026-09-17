@@ -27,6 +27,7 @@ struct CalendarBarApp: App {
                     Image(systemName: "calendar")
                     Text(title)
                         .lineLimit(1)
+                        .monospacedDigit()
                 }
                 .fixedSize()
             } else {

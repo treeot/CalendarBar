@@ -26,15 +26,16 @@ struct MenuBarContentView: View {
     }
 
     private var header: some View {
-        HStack(spacing: 10) {
-            Image(systemName: "calendar")
-                .font(.title2)
-                .foregroundStyle(.tint)
+        ZStack(alignment: .trailing) {
+            HStack(spacing: 10) {
+                Image(systemName: "calendar")
+                    .font(.title2)
+                    .foregroundStyle(.tint)
 
-            Text("CalendarBar")
-                .font(.title3.weight(.semibold))
-
-            Spacer()
+                Text("CalendarBar")
+                    .font(.title3.weight(.semibold))
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
 
             Menu {
                 Picker("Menu Bar Display", selection: $displayMode) {

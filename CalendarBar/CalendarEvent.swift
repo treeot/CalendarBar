@@ -147,15 +147,24 @@ enum MenuBarDisplayMode: String, CaseIterable, Identifiable {
         case .iconOnly: "Icon Only"
         }
     }
+
+    /// Fixed pixel width reserved for the title text in the menu bar. Pinning a
+    /// constant width is what keeps the status item from shifting: the item sizes
+    /// itself to its label, so any change in the label's rendered width moves the
+    /// whole item. Counting characters is not enough because the font is
+    /// proportional and the countdown changes length as it ticks.
+    var menuBarTextWidth: CGFloat? {
+        switch self {
+        case .full: 190
+        case .compact: 54
+        case .iconOnly: nil
+        }
+    }
 }
 
 enum MenuBarTitleFormatter {
     private static let maximumFullTitleLength = 31
     private static let countdownSeparator = " · "
-    // Reserve a fixed width for the countdown so the visible title length stays
-    // constant as the countdown ticks down. Without this the title reflows every
-    // minute and the whole menu bar item shifts position ("moves").
-    private static let reservedCountdownLength = 7
 
     static func title(
         mode: MenuBarDisplayMode,
@@ -173,7 +182,6 @@ enum MenuBarTitleFormatter {
                 let titleBudget = maximumFullTitleLength
                     - prefix.count
                     - countdownSeparator.count
-                    - reservedCountdownLength
                 return prefix
                     + truncated(nextEvent.title, maximumLength: titleBudget)
                     + countdownSeparator

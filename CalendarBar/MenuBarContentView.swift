@@ -19,7 +19,11 @@ struct MenuBarContentView: View {
         }
         .padding(16)
         .frame(width: 360)
-        .background(.regularMaterial)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .strokeBorder(.white.opacity(0.12), lineWidth: 1)
+        )
         .onAppear {
             manager.refresh()
             launchAtLogin.refreshStatus()

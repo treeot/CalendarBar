@@ -189,11 +189,11 @@ final class EventTimelineTests: XCTestCase {
         // otherwise the menu bar item reflows and shifts every minute.
         XCTAssertEqual(
             MenuBarTitleFormatter.title(mode: .full, currentEvent: nil, upcomingEvents: [farEvent], now: now),
-            "Next: ABCDEFGHIJKLMN… · 9h 6m"
+            "Next: ABCDEFGHIJKLMNOPQRSTU… · 9h 6m"
         )
         XCTAssertEqual(
             MenuBarTitleFormatter.title(mode: .full, currentEvent: nil, upcomingEvents: [nearEvent], now: now),
-            "Next: ABCDEFGHIJKLMN… · 2m"
+            "Next: ABCDEFGHIJKLMNOPQRSTU… · 2m"
         )
     }
 

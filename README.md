@@ -23,6 +23,18 @@ and does not connect to the internet.
 
 ## Install the app
 
+### Homebrew
+
+```bash
+brew install --cask treeot/tap/calendarbar
+```
+
+Because the app is ad-hoc signed, macOS Gatekeeper still prompts on first launch
+— control-click **CalendarBar.app** in Applications, choose **Open**, then
+**Open** again.
+
+### Direct download
+
 Download the latest `.dmg` from [Releases](https://github.com/treeot/CalendarBar/releases),
 open it, and drag **CalendarBar** into the **Applications** folder.
 

@@ -56,3 +56,28 @@ jobs:
           files: |
             ${{ runner.temp }}/release/CalendarBar-${{ github.ref_name }}.dmg
             ${{ runner.temp }}/release/SHA256SUMS
+
+      - name: Bump Homebrew tap cask
+        env:
+          TAP_TOKEN: ${{ secrets.TAP_GITHUB_TOKEN }}
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          DMG="$RUNNER_TEMP/release/CalendarBar-${GITHUB_REF_NAME}.dmg"
+          SHA="$(shasum -a 256 "$DMG" | awk '{print $1}')"
+
+          git clone "https://x-access-token:${TAP_TOKEN}@github.com/treeot/homebrew-tap.git" \
+            "$RUNNER_TEMP/tap"
+          CASK="$RUNNER_TEMP/tap/Casks/calendarbar.rb"
+
+          sed -i '' -E "s/^  version \".*\"/  version \"${VERSION}\"/" "$CASK"
+          sed -i '' -E "s/^  sha256 \".*\"/  sha256 \"${SHA}\"/" "$CASK"
+
+          cd "$RUNNER_TEMP/tap"
+          if git diff --quiet; then
+            echo "Cask already up to date."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -am "calendarbar ${VERSION}"
+          git push

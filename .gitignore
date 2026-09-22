@@ -1,6 +1,9 @@
 # macOS
 .DS_Store
 
+# Local clone of the Homebrew tap repo
+homebrew-tap/
+
 # Xcode build products
 build/
 DerivedData/

@@ -2,17 +2,20 @@ import AppKit
 import Combine
 import SwiftUI
 
+/// Plain AppKit entry point. A SwiftUI `App` needs at least one scene, and
+/// the only window-free option left (an empty `Settings` scene) opens a blank
+/// "CalendarBar Settings" window on launch. The UI is just a status item and
+/// its popover, so no scene is needed.
 @main
 @MainActor
-struct CalendarBarApp: App {
-    @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+enum CalendarBarApp {
+    private static let delegate = AppDelegate()
 
-    var body: some Scene {
-        // The menu bar item is owned by AppKit (see StatusItemController). A
-        // scene is still required, so provide an empty Settings scene.
-        Settings {
-            EmptyView()
-        }
+    static func main() {
+        let app = NSApplication.shared
+        app.setActivationPolicy(.accessory)
+        app.delegate = delegate
+        app.run()
     }
 }
 
@@ -72,6 +75,7 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
         self.launchAtLogin = launchAtLogin
         self.displayModeStore = displayModeStore
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+        statusItem.autosaveName = Self.autosaveName
         super.init()
 
         if let button = statusItem.button {
@@ -104,6 +108,10 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
 
         updateLabel()
     }
+
+    /// A stable autosave name keeps the position the user picks by
+    /// ⌘-dragging across updates and re-signed builds.
+    private static let autosaveName = "CalendarBar"
 
     @objc private func togglePopover(_ sender: Any?) {
         if popover.isShown {
@@ -254,17 +262,40 @@ enum StatusItemLabelRenderer {
         }
 
         let suffixWidth = ceil((suffix as NSString).size(withAttributes: attributes).width)
-        let leadingWidth = min(
-            ceil((parts.leading as NSString).size(withAttributes: attributes).width),
-            max(0, textRect.width - suffixWidth)
+        let leading = truncated(
+            parts.leading,
+            toWidth: max(0, textRect.width - suffixWidth),
+            attributes: attributes
         )
+        let leadingWidth = ceil((leading as NSString).size(withAttributes: attributes).width)
         var leadingRect = textRect
         leadingRect.size.width = leadingWidth
         var suffixRect = textRect
         suffixRect.origin.x = textRect.minX + leadingWidth
         suffixRect.size.width = suffixWidth
 
-        (parts.leading as NSString).draw(with: leadingRect, options: options, attributes: attributes)
+        (leading as NSString).draw(with: leadingRect, options: [.usesLineFragmentOrigin], attributes: attributes)
         (suffix as NSString).draw(with: suffixRect, options: [.usesLineFragmentOrigin], attributes: attributes)
+    }
+
+    /// Tail-truncates by measuring, so the returned string's real width is
+    /// known and the countdown can be drawn directly after it with no gap.
+    static func truncated(
+        _ text: String,
+        toWidth maxWidth: CGFloat,
+        attributes: [NSAttributedString.Key: Any]
+    ) -> String {
+        func width(_ string: String) -> CGFloat {
+            ceil((string as NSString).size(withAttributes: attributes).width)
+        }
+        guard width(text) > maxWidth else { return text }
+
+        var characters = Array(text)
+        while !characters.isEmpty {
+            characters.removeLast()
+            let candidate = String(characters).trimmingCharacters(in: .whitespaces) + "…"
+            if width(candidate) <= maxWidth { return candidate }
+        }
+        return ""
     }
 }

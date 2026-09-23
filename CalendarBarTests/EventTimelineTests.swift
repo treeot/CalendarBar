@@ -1,4 +1,5 @@
 import XCTest
+import AppKit
 @testable import CalendarBar
 
 final class EventTimelineTests: XCTestCase {
@@ -214,6 +215,18 @@ final class EventTimelineTests: XCTestCase {
             StatusItemLabelRenderer.naturalTextWidth(of: "No more events", mode: .full),
             StatusItemLabelRenderer.maximumFullTextWidth
         )
+    }
+
+    func testTruncatedFitsWidthAndEndsWithEllipsis() {
+        let attributes: [NSAttributedString.Key: Any] = [.font: NSFont.systemFont(ofSize: 13)]
+        let result = StatusItemLabelRenderer.truncated(
+            "Next: Calculus Exam 1 (Lesson 3)",
+            toWidth: 100,
+            attributes: attributes
+        )
+        XCTAssertTrue(result.hasSuffix("…"))
+        XCTAssertLessThanOrEqual((result as NSString).size(withAttributes: attributes).width, 100)
+        XCTAssertEqual(StatusItemLabelRenderer.truncated("Short", toWidth: 100, attributes: attributes), "Short")
     }
 
     func testSplitCountdownSeparatesTheCountdownSuffix() {

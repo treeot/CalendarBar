@@ -4,7 +4,7 @@ import SwiftUI
 struct MenuBarContentView: View {
     @ObservedObject var manager: CalendarManager
     @ObservedObject var launchAtLogin: LaunchAtLoginManager
-    @Binding var displayMode: MenuBarDisplayMode
+    @ObservedObject var displayModeStore: MenuBarDisplayModeStore
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -19,19 +19,6 @@ struct MenuBarContentView: View {
         }
         .padding(16)
         .frame(width: 360)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
-        .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .strokeBorder(.white.opacity(0.12), lineWidth: 1)
-        )
-        .onAppear {
-            manager.refresh()
-            launchAtLogin.refreshStatus()
-        }
-        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
-            manager.refresh()
-            launchAtLogin.refreshStatus()
-        }
     }
 
     private var header: some View {
@@ -46,7 +33,7 @@ struct MenuBarContentView: View {
             Spacer(minLength: 0)
 
             Menu {
-                Picker("Menu Bar Display", selection: $displayMode) {
+                Picker("Menu Bar Display", selection: $displayModeStore.mode) {
                     ForEach(MenuBarDisplayMode.allCases) { mode in
                         Text(mode.label).tag(mode)
                     }

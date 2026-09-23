@@ -197,6 +197,32 @@ final class EventTimelineTests: XCTestCase {
         )
     }
 
+    func testStatusItemWidthPinHoldsWidthWhileCountdownShrinks() {
+        var pin = StatusItemWidthPin()
+        XCTAssertEqual(pin.width(for: "next|a", natural: 120), 120)
+        XCTAssertEqual(pin.width(for: "next|a", natural: 100), 120)
+        XCTAssertEqual(pin.width(for: "next|a", natural: 130), 130)
+        XCTAssertEqual(pin.width(for: "next|b", natural: 80), 80)
+    }
+
+    func testNaturalTextWidthIgnoresWhichDigitsAreShown() {
+        XCTAssertEqual(
+            StatusItemLabelRenderer.naturalTextWidth(of: "Next: Standup · 11m", mode: .full),
+            StatusItemLabelRenderer.naturalTextWidth(of: "Next: Standup · 48m", mode: .full)
+        )
+        XCTAssertLessThan(
+            StatusItemLabelRenderer.naturalTextWidth(of: "No more events", mode: .full),
+            StatusItemLabelRenderer.maximumFullTextWidth
+        )
+    }
+
+    func testSplitCountdownSeparatesTheCountdownSuffix() {
+        let parts = MenuBarTitleFormatter.splitCountdown("Next: A · B · 2m")
+        XCTAssertEqual(parts.leading, "Next: A · B")
+        XCTAssertEqual(parts.suffix, " · 2m")
+        XCTAssertNil(MenuBarTitleFormatter.splitCountdown("No more events").suffix)
+    }
+
     func testEventCacheRequiresReloadForFirstLoadAndNewDayOnly() {
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = TimeZone(secondsFromGMT: 0)!

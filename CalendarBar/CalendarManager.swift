@@ -44,6 +44,7 @@ final class CalendarManager: ObservableObject {
     private var authorizationMonitorTimer: Timer?
     private var refreshTimer: Timer?
     private var eventStoreChangedObserver: NSObjectProtocol?
+    private var systemObservers: [(center: NotificationCenter, token: NSObjectProtocol)] = []
     private var cachedEvents: [CalendarEvent] = []
     private var eventsLoadedAt: Date?
 
@@ -52,6 +53,9 @@ final class CalendarManager: ObservableObject {
         refreshTimer?.invalidate()
         if let eventStoreChangedObserver {
             NotificationCenter.default.removeObserver(eventStoreChangedObserver)
+        }
+        for observer in systemObservers {
+            observer.center.removeObserver(observer.token)
         }
     }
 
@@ -250,13 +254,29 @@ final class CalendarManager: ObservableObject {
 
     private func installLiveUpdatesIfNeeded() {
         if refreshTimer == nil {
-            let timer = Timer(timeInterval: 60, repeats: true) { [weak self] _ in
-                Task { @MainActor [weak self] in
-                    self?.handleTimerTick()
+            scheduleMinuteTimer()
+        }
+
+        if systemObservers.isEmpty {
+            // Timers don't fire during sleep and drift when the clock changes,
+            // so resync immediately on wake, clock, time zone, and day changes
+            // instead of showing a stale countdown for up to a minute.
+            let workspaceCenter = NSWorkspace.shared.notificationCenter
+            let defaultCenter = NotificationCenter.default
+            let triggers: [(NotificationCenter, Notification.Name)] = [
+                (workspaceCenter, NSWorkspace.didWakeNotification),
+                (defaultCenter, .NSSystemClockDidChange),
+                (defaultCenter, .NSSystemTimeZoneDidChange),
+                (defaultCenter, .NSCalendarDayChanged),
+            ]
+            systemObservers = triggers.map { center, name in
+                let token = center.addObserver(forName: name, object: nil, queue: .main) { [weak self] _ in
+                    Task { @MainActor [weak self] in
+                        self?.resyncAfterSystemChange()
+                    }
                 }
+                return (center, token)
             }
-            RunLoop.main.add(timer, forMode: .common)
-            refreshTimer = timer
         }
 
         if eventStoreChangedObserver == nil {
@@ -270,6 +290,31 @@ final class CalendarManager: ObservableObject {
                 }
             }
         }
+    }
+
+    /// Fires on wall-clock minute boundaries so the countdown and the
+    /// "Now" transition change exactly when the minute does, not up to 59
+    /// seconds late depending on when the app was launched.
+    private func scheduleMinuteTimer() {
+        refreshTimer?.invalidate()
+
+        let now = Date()
+        let nextMinute = Calendar.current.dateInterval(of: .minute, for: now)?.end
+            ?? now.addingTimeInterval(60)
+        let timer = Timer(fire: nextMinute, interval: 60, repeats: true) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                self?.handleTimerTick()
+            }
+        }
+        timer.tolerance = 0.5
+        RunLoop.main.add(timer, forMode: .common)
+        refreshTimer = timer
+    }
+
+    private func resyncAfterSystemChange() {
+        guard refreshTimer != nil else { return }
+        scheduleMinuteTimer()
+        refresh()
     }
 
     private func installAuthorizationMonitorIfNeeded() {
@@ -297,6 +342,11 @@ final class CalendarManager: ObservableObject {
             NotificationCenter.default.removeObserver(eventStoreChangedObserver)
             self.eventStoreChangedObserver = nil
         }
+
+        for observer in systemObservers {
+            observer.center.removeObserver(observer.token)
+        }
+        systemObservers = []
     }
 
 }
